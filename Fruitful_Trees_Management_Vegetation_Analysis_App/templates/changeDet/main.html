@@ -1,0 +1,20 @@
+{% extends 'changeDet/changDetBase.html' %}
+
+{% block content %}
+
+<ul>
+<li>
+    <a href={% url 'changedet:NDVI_view' %}>NDVI algorithm</a>
+</li>
+<li>
+    <a href={% url 'changedet:BAI_view' %}>BAI algorithm</a>
+</li>
+<li>
+    <a href={% url 'changedet:ChangeDet_view' %}>Change Detection algorithm</a>
+</li>
+<li>
+    <a href={% url 'changedet:TimeSeries_view' %}>Time Series algorithm</a>
+</li>
+</ul>
+
+{% endblock %}

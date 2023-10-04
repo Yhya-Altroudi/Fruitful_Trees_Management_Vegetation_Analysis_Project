@@ -1,0 +1,43 @@
+/* all maps */
+.leaflet-container {
+
+  
+    
+    height: 80vh;
+    width: 100%;
+
+    z-index: 1;
+    opacity: 1;
+}
+
+#specialbigmap {
+    height: 800px;
+}
+
+#submit-button {
+    display: none;
+}
+
+#form-containter {
+    position: absolute;
+    max-width: 39%;
+    min-width: 28%;
+    top: 100%; 
+    left: 50%;
+    transform: translate(-50%, -100%);
+    z-index: 100;
+    border: 1px solid;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    color: #000000;
+    background-color: #57ff84c1;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Resize the "display_raw" textbox */
+.django-leaflet-raw-textarea {
+    width: 100%;
+}

@@ -1,0 +1,118 @@
+<!--Load static folder-->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!--Meta data and Page Title-->
+    <meta charset="utf-8">
+    <title>Change Detection Base page</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!--<meta content="Free HTML Templates" name="keywords">-->
+    <!--<meta content="Free HTML Templates" name="description">-->
+
+    <!-- Favicon -->
+    <!--<link href="img/favicon.ico" rel="icon">-->
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">-->
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">-->
+
+    <!-- Libraries Stylesheet -->
+    <!--<link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">-->
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href={% static 'changeDet/css/bootstrap.min.css' %} rel="stylesheet">
+
+    <!--W3schools css libraries-->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+
+    <!-- Template Stylesheet -->
+    <link href={% static 'changeDet/css/changDetBase.css' %} rel="stylesheet">
+
+    <!-- NavBar URLS -->
+
+    {%url 'home:index' as home%} <!--This should be changed into home url-->
+    {%url 'changedet:main_list' as list%} <!--This is currently for testsing-->
+    {% url 'changedet:NDVI_view' as ndvi %}
+    {%url 'changedet:BAI_view' as bai%}
+    {%url 'changedet:ChangeDet_view' as chang_det%}
+    {%url 'changedet:TimeSeries_view' as timeseries%}
+
+
+</head>
+
+<body>
+    
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-primary navbar-dark shadow-sm py-3 py-lg-0 px-3 px-lg-5">
+        <a href="{{home}}" class="navbar-brand d-flex d-lg-none">
+            <h1 class="m-0 display-4 text-secondary"><span class="text-white">Chang</span>Det</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div>
+            <ul class="nav navbar-nav ">
+                {% if user.is_authenticated %}
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img  id="profile-image" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" />
+                    </a>
+                    <div class="dropdown-menu m-0">
+                        <a href="{% url 'account_logout' %}?next={{ndvi}}" class="dropdown-item">Logout</a>
+                    </div>
+                 {% else %}
+                 <li><a href="{% url 'account_login' %}?next={{ndvi}}" class="loging">Login</a></li>
+                 {% endif %}
+              </ul>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav mx-auto py-0">
+                <a href="{{home}}" {%if request.get_full_path == home%} class="nav-item nav-link active" {%else%} class="nav-item nav-link"{%endif%}>Home</a>
+                <a href="{{ndvi}}"{%if request.get_full_path == ndvi%} class="nav-item nav-link active" {%else%} class="nav-item nav-link"{%endif%}>NDVI</a>
+                <a href="{{bai}}" {%if request.get_full_path == bai%} class="nav-item nav-link active" {%else%} class="nav-item nav-link"{%endif%}>BAI</a>
+                <a href="{{chang_det}}" {%if request.get_full_path == chang_det%} class="nav-item nav-link active" {%else%} class="nav-item nav-link"{%endif%}>Change Detection</a>
+                <a href="{{timeseries}}" {%if request.get_full_path == timeseries%} class="nav-item nav-link active" {%else%} class="nav-item nav-link"{%endif%}>TimeSeries</a>
+            </div>
+        </div>
+        
+    </nav>
+    <!-- Navbar End -->
+
+    <!--Content Block-->
+    {% block content%}{% endblock %}
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!--<script src="lib/easing/easing.min.js"></script>-->
+    <!--<script src="lib/waypoints/waypoints.min.js"></script>-->
+    <!--<script src="lib/counterup/counterup.min.js"></script>-->
+    <!--<script src="lib/owlcarousel/owl.carousel.min.js"></script>-->
+
+    <!-- Template Javascript -->
+    <script src={% static 'changeDet/js/changDetBase.js' %}></script>
+</body>
+
+</html>
+
+
+<!--
+
+    <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                    <div class="dropdown-menu m-0">
+                        <a href="blog.html" class="dropdown-item">Blog Grid</a>
+                        <a href="detail.html" class="dropdown-item">Blog Detail</a>
+                        <a href="feature.html" class="dropdown-item">Features</a>
+                        <a href="team.html" class="dropdown-item">The Team</a>
+                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                    </div>
+-->

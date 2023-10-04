@@ -1,0 +1,97 @@
+{% load leaflet_tags %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farms</title>
+    {% leaflet_js %} {% leaflet_css %}
+    <link rel="stylesheet" href="{% static 'w3css/4/w3.css' %}" />
+    <link rel="stylesheet" href="{% static 'farms/style.css' %}" />
+    <script type="module" src="{% static 'farms/main.js' %}"></script>
+  </head>
+
+  <body>
+    <div class="w3-cell-row">
+      {% leaflet_map "map" %}
+      <script>
+        let map = document.getElementById("map");
+        map.classList = "w3-container w3-cell w3-cell-top w3-mobile";
+        // map.style = 'width: 600px; height: 400px;';
+      </script>
+      <form id="detail" class="w3-container w3-cell w3-cell-top w3-mobile">
+        <h2>Input Form</h2>
+        <p>
+          <label>First Name</label>
+          <input class="w3-input" type="text" />
+        </p>
+        <p>
+          <label>Last Name</label>
+          <input class="w3-input" type="text" />
+        </p>
+        <p>Farm Area: 100km squared</p>
+        <p>
+          <label>Email</label>
+          <input class="w3-input" type="text" />
+        </p>
+      </form>
+      <div id="list" class="w3-container w3-cell w3-cell-top w3-mobile">
+        <h2>Filter List</h2>
+        <p>Search for a name in the input field.</p>
+        <button type="button" id="select-all">Select All</button>
+        <form id="do-filter" action="{% url 'farms:farm_list' %}" method="get">
+          <input type="submit" value="do filter" />
+        </form>
+        <label for="myUL">Farms</label>
+        <input
+          class="w3-input w3-border w3-padding"
+          type="text"
+          placeholder="Search for names.."
+          id="myInput"
+          onkeyup="myFunction()"
+        />
+        <select
+          class="w3-ul w3-margin-top"
+          id="myUL"
+          data-mdb-clear-button="true"
+          name="{% url 'farms:tree_list' 1 %}"
+          multiple
+        >
+          <option name="--Select All--" value="-1" hidden>
+            --Select All--
+          </option>
+          <!-- {% for farm in farm_list %}
+          <option name="{{farm.name}}" value="{{farm.id}}">
+            {{farm.name}}
+          </option>
+          {% endfor %} -->
+        </select>
+        <script>
+          function myFunction() {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.children; //getElementsByTagName("li");
+            for (let i = 0; i < li.length; i++) {
+              txtValue = li[i].textContent || li[i].innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+              } else {
+                li[i].style.display = "none";
+              }
+            }
+          }
+        </script>
+      </div>
+    </div>
+    <button id="geojson-a">drawnItems</button><br />
+    <textarea id="geojson" type="text" cols="30" rows="10"></textarea>
+  </body>
+</html>
+<script>
+  var apiURLs = {
+    farm: "{% url 'farms:farm_api' %}",
+    tree: "{% url 'farms:tree_api' 0 %}",
+  };
+</script>

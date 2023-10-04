@@ -1,0 +1,11 @@
+{% load i18n %}
+
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" style="visibility: hidden;" id="click_google_login">{% trans "Continue" %}</button>
+</form>
+
+<script>
+  document.getElementById("click_google_login").click();
+</script>

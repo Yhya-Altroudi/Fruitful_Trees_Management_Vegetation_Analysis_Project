@@ -1,0 +1,16 @@
+
+
+{% load i18n %}
+
+<form method="post" action="{% url 'account_logout' %}">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+  <button type="submit" style="visibility: hidden;" id="click_logout">{% trans 'Sign Out' %}</button>
+</form>
+
+
+<script>
+    document.getElementById("click_logout").click();
+</script>

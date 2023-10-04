@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input
+      type="range"
+      name="a"
+      max="89"
+      min="-89"
+      onchange="a=this.value;f();"
+    />
+    <input
+      type="range"
+      name="b"
+      max="89"
+      min="-89"
+      onchange="b=this.value;f();"
+    />
+    <input
+      type="range"
+      name="c"
+      max="89"
+      min="-89"
+      onchange="c=this.value;f();"
+    />
+    <input
+      type="range"
+      name="d"
+      max="89"
+      min="-89"
+      onchange="d=this.value;f();"
+    />
+    <p id="p"></p>
+    <script>
+      var a = 0,
+        b = 0,
+        c = 0,
+        d = 0;
+      async function f() {
+        const response = await fetch(
+          "http://127.0.0.1:8000/farms/api/?in_bbox=" +
+            a +
+            "," +
+            b +
+            "," +
+            c +
+            "," +
+            d
+        );
+        const data = await response.json();
+        p = document.getElementById("p");
+        p.innerHTML = JSON.stringify(data);
+      }
+    </script>
+  </body>
+</html>

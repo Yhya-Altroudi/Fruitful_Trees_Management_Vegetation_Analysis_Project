@@ -1,0 +1,485 @@
+{% extends "base.html" %}{% load leaflet_tags %} {% load static %} {% load
+rest_framework %} {% block head %}
+<title>Fruitful Tree Count Management - Farms Management</title>
+
+<!-- Leaflet Stylesheet -->
+{% leaflet_css %}
+
+<style>
+  .info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+  .info h4 {
+    margin: 0 0 5px;
+    color: #777;
+  }
+</style>
+<!-- Chart.js -->
+<script src="{% static 'cdnjs.cloudflare.com_ajax_libs_Chart.js_2.9.4_Chart.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.4.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<!-- Page Stylesheet -->
+<!-- <link rel="stylesheet" href="{% static 'farms/style.css' %}" /> -->
+{% endblock %} {% block content %}
+<!-- Hero Start -->
+<div class="container-fluid bg-primary py-5 bg-hero mb-5">
+  <div class="container py-5">
+    <div class="row justify-content-start">
+      <div class="col-lg-8 text-center text-lg-start">
+        <h1 class="display-1 text-white mb-md-4">Farms Management</h1>
+        <!-- <a href="" class="btn btn-primary py-md-3 px-md-5 me-3">Home</a> -->
+        <!-- <a href="" class="btn btn-secondary py-md-3 px-md-5">Blog Grid</a> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Hero End -->
+
+<!-- Blog Start -->
+<div class="container py-5">
+  <div class="row g-5">
+    <!-- Blog list Start -->
+    <div class="col-lg-8">
+      <div class="row g-5">
+        <!-- Filter -->
+        <div class="col-md-12">
+          <div class="bg-primary h-100 p-5">
+            <h2 class="mb-4 text-secondary">Farms Filtering</h2>
+            <form method="get" id="do-filter">
+              <div class="row g-3">
+                <div class="col-6">
+                  <select
+                    class="form-control bg-light border-0 px-4"
+                    name="ordering"
+                    id="id_ordering"
+                    style="height: 55px"
+                  >
+                    <option value="" selected>--Ordering by--</option>
+
+                    <option value="area">Area</option>
+
+                    <option value="-area">Area (descending)</option>
+
+                    <option value="population">Population</option>
+
+                    <option value="-population">Population (descending)</option>
+
+                    <option value="density">Density</option>
+
+                    <option value="-density">Density (descending)</option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <input
+                    type="text"
+                    class="form-control bg-light border-0 px-4"
+                    name="trees_type__in"
+                    id="id_trees_type__in"
+                    placeholder="Fruitful tree types"
+                    style="height: 55px"
+                    readonly
+                  />
+                </div>
+                <div class="col-12">
+                  <input
+                    type="month"
+                    class="form-control bg-light border-0 px-4"
+                    name="date"
+                    id="id_date"
+                    placeholder="Farm Date"
+                    style="height: 55px"
+                    required
+                  />
+                </div>
+                <div class="col-6">
+                  <input
+                    type="number"
+                    class="form-control bg-light border-0 px-4"
+                    name="area__lt"
+                    step="any"
+                    id="id_area__lt"
+                    placeholder="maximum farm area"
+                    style="height: 55px"
+                  />
+                </div>
+                <div class="col-6">
+                  <input
+                    type="number"
+                    class="form-control bg-light border-0 px-4"
+                    name="area__gt"
+                    step="any"
+                    id="id_area__gt"
+                    placeholder="minimum farm area"
+                    style="height: 55px"
+                  />
+                </div>
+                <div class="col-6">
+                  <input
+                    type="number"
+                    class="form-control bg-light border-0 px-4"
+                    name="population__lt"
+                    step="any"
+                    id="id_population__lt"
+                    placeholder="maximum farm population"
+                    style="height: 55px"
+                  />
+                </div>
+                <div class="col-6">
+                  <input
+                    type="number"
+                    class="form-control bg-light border-0 px-4"
+                    name="population__gt"
+                    step="any"
+                    id="id_population__gt"
+                    placeholder="minimum farm population"
+                    style="height: 55px"
+                  />
+                </div>
+                <div class="col-6">
+                  <input
+                    type="number"
+                    class="form-control bg-light border-0 px-4"
+                    name="density__lt"
+                    step="any"
+                    id="id_density__lt"
+                    placeholder="maximum farm density"
+                    style="height: 55px"
+                  />
+                </div>
+                <div class="col-6">
+                  <input
+                    type="number"
+                    class="form-control bg-light border-0 px-4"
+                    name="density__gt"
+                    step="any"
+                    id="id_density__gt"
+                    placeholder="minimum farm density"
+                    style="height: 55px"
+                  />
+                </div>
+                <br />
+                <span class="helptext fs-6 text-white mb-2"
+                  >Filter on screen box.
+                  <input
+                    type="checkbox"
+                    class="border-0 px-4"
+                    name="in_bbox"
+                    step="any"
+                    id="id_in_bbox"
+                    placeholder="in_bbox"
+                  />
+                </span>
+                <div class="col-12">
+                  <button class="btn btn-secondary w-100 py-3" type="submit">
+                    Fetch Farms
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- End Filter -->
+
+        <!-- Map -->
+        <div class="col-md-6" style="width: 100%">{% leaflet_map "map" %}</div>
+        <script>
+          let map = document.getElementById("map");
+        </script>
+        <!-- End Map -->
+
+        <!-- Info Start -->
+        <div id="info_card" class="col-md-6">
+          <div class="blog-item position-relative overflow-hidden">
+            <img
+              class="img-fluid"
+              src="{% static 'organic-farm-website-template/img/blog-1.jpg' %}"
+              alt=""
+            />
+            <a class="blog-overlay" href="">
+              <h4 id="detail" class="text-white">Select Farms to show info.</h4>
+              <span class="text-white fw-bold">Statistics</span>
+            </a>
+          </div>
+        </div>
+        <!-- Info End -->
+
+        <!-- Create Farm Start -->
+        {% if user.is_authenticated %}
+        <div class="col-md-6" id="farm_create_ui" hidden>
+          <div class="blog-item position-relative overflow-hidden">
+            <img
+              class="img-fluid"
+              src="{% static 'organic-farm-website-template/img/blog-2.jpg' %}"
+              alt=""
+            />
+            <div class="blog-overlay">
+              <h2 class="text-white mb-4">Farm Creation</h2>
+              <form class="form-horizontal" id="farm_create" method="post">
+                <input type="text" name="polygon" hidden />
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <select
+                      class="form-control bg-white border-0"
+                      name="trees_type"
+                      style="height: 55px"
+                    >
+                      {% for k,v in trees_types.items %}
+                      <option value="{{ v }}">{{ k }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <input
+                      type="text"
+                      name="name"
+                      class="form-control bg-white border-0"
+                      placeholder="Farm Name"
+                      style="height: 55px"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <input
+                      type="month"
+                      name="date"
+                      class="form-control bg-white border-0"
+                      placeholder="Farm Date"
+                      style="height: 55px"
+                      required
+                    />
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-secondary w-100 py-3" type="submit">
+                      Submit Farm
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6" id="detect_trees_ui" hidden>
+          <div class="blog-item position-relative overflow-hidden">
+            <img
+              class="img-fluid"
+              src="{% static 'organic-farm-website-template/img/blog-1.jpg' %}"
+              alt=""
+            />
+            <div class="blog-overlay">
+              <h2 class="text-white mb-4">Automatic Tree Detection</h2>
+              <form class="form-horizontal" id="detect_trees" method="post">
+                <div class="row g-3">
+                  <div class="col-12 col-sm-6">
+                    <input
+                      type="range"
+                      name="threshold"
+                      min="0.5"
+                      step="0.1"
+                      max="1"
+                      value="0.8"
+                      class="form-control bg-white border-0"
+                      placeholder="sensetivity to detect trees"
+                      style="height: 55px"
+                    />
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <input
+                      type="number"
+                      name="smoothing"
+                      min="1"
+                      max="25"
+                      value="7"
+                      class="form-control bg-white border-0"
+                      placeholder="Smoothing tree details"
+                      style="height: 55px"
+                    />
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <button class="btn btn-secondary w-100 py-3" type="submit">
+                      Detect Trees
+                    </button>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <button
+                      class="btn btn-secondary w-100 py-3"
+                      type="button"
+                      id="delete_trees"
+                    >
+                      Delete Trees
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <!-- Create Farm End -->
+
+        <!-- pieChart Start -->
+        <div class="col-md-6">
+          <canvas
+            id="trees_types_pieChart"
+            style="width: 100%; height: 100%; min-height: 300px"
+          ></canvas>
+        </div>
+        <!-- pieChart End -->
+
+        <!-- population_scatter Start -->
+        <div class="col-md-12">
+          <canvas
+            id="population_scatter"
+            style="width: 100%; height: 100%; min-height: 300px"
+          ></canvas>
+        </div>
+        <!-- population_scatter End -->
+      </div>
+    </div>
+    <!-- Blog list End -->
+
+    <!-- Sidebar Start -->
+    <div class="col-lg-4">
+      <!-- Tags Start -->
+      <div class="mb-5">
+        <h2 class="mb-4">Fruitful Tree Types</h2>
+        <div class="d-flex flex-wrap m-n1">
+          {% for k,v in trees_types.items %}
+          <a
+            class="btn btn-primary m-1"
+            onclick="
+                let a=document.getElementById('id_trees_type__in');
+                if(this.classList.contains('btn-secondary')){
+                  if(a.value.startsWith('{{v}}'))
+                    a.value = a.value.replace('{{v}}', '');
+                  else
+                    a.value = a.value.replace(',{{v}}', '');
+                  this.classList.remove('btn-secondary');
+                  this.classList.add('btn-primary');
+                }
+                else {
+                  if(a.value == null || a.value == '')
+                    a.value = '{{v}}';
+                  else //if(!a.value.includes('{{v}}'))
+                    a.value += ',{{v}}';
+                  this.classList.remove('btn-primary');
+                  this.classList.add('btn-secondary');
+                }"
+            >{{k}}</a
+          >
+          {% endfor %}
+          <!-- <a href="" class="btn btn-primary m-1">Design</a>
+              <a href="" class="btn btn-primary m-1">Development</a>
+              <a href="" class="btn btn-primary m-1">Marketing</a>
+              <a href="" class="btn btn-primary m-1">SEO</a>
+              <a href="" class="btn btn-primary m-1">Writing</a>
+              <a href="" class="btn btn-primary m-1">Consulting</a>
+              <a href="" class="btn btn-primary m-1">Design</a>
+              <a href="" class="btn btn-primary m-1">Development</a>
+              <a href="" class="btn btn-primary m-1">Marketing</a>
+              <a href="" class="btn btn-primary m-1">SEO</a>
+              <a href="" class="btn btn-primary m-1">Writing</a>
+              <a href="" class="btn btn-primary m-1">Consulting</a> -->
+        </div>
+      </div>
+      <!-- Tags End -->
+
+      <!-- Search Form Start -->
+      <!-- <div class="mb-5">
+        
+      </div> -->
+      <!-- Search Form End -->
+
+      <!-- Farms List Start -->
+      <div class="mb-5">
+        <h2 class="mb-4">Farms List</h2>
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control p-3"
+            placeholder="Keyword"
+            id="myInput"
+            onkeyup="myFunction()"
+          />
+          <button class="btn btn-primary px-4">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+        <label class="form-label select-label" for="myUL">Farms</label>
+        <select
+          style="width: 100%"
+          class="select d-flex flex-column justify-content-start bg-primary p-4"
+          id="myUL"
+          multiple
+        >
+          <option
+            class="fs-5 fw-bold text-white mb-2"
+            name="--Select All--"
+            value="-1"
+            hidden
+          >
+            <i class="bi bi-arrow-right me-2"></i>--Select All--
+          </option>
+        </select>
+      </div>
+      <!-- Farms List End -->
+
+      <!-- Image Start -->
+      <div class="mb-5">
+        <img
+          src="{% static 'organic-farm-website-template/img/blog-1.jpg' %}"
+          alt=""
+          class="img-fluid rounded"
+        />
+      </div>
+      <!-- Image End -->
+    </div>
+    <!-- Sidebar End -->
+  </div>
+</div>
+<!-- Blog End -->
+{% endblock %} {% block tail%}
+<!-- Leaflet  Javascript -->
+{% leaflet_js %}
+
+<!-- Page Javascript -->
+<script type="module" src="{% static 'farms/main.js' %}" defer></script>
+<script type="module" defer>
+  import {
+    copyFarm,
+    deleteFarm,
+    updateFarm,
+  } from "{% static 'farms/main.js' %}";
+  window.copyFarm = copyFarm;
+  window.deleteFarm = deleteFarm;
+  window.updateFarm = updateFarm;
+</script>
+<script>
+  var apiURLs = {
+    farm: "{% url 'farms:farm_api' %}",
+    farm_detail: "{% url 'farms:farm_detail_api' 0 %}",
+    tree_detect: "{% url 'farms:tree_detect_api' %}",
+    tree: "{% url 'farms:tree_api' 0 %}",
+  };
+  var is_authenticated = "{{request.user.is_authenticated}}" == "True";
+</script>
+<script>
+  function myFunction() {
+    var input, filter, ul, li;
+    input = window.document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = window.document.getElementById("myUL");
+    li = ul.children; //getElementsByTagName("li");
+    for (let i = 1; i < li.length; i++) {
+      txtValue = li[i].textContent || li[i].innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+</script>
+{% endblock %}

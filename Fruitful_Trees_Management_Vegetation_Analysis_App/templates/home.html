@@ -1,0 +1,239 @@
+{% extends "base.html" %} {% load static %} {% block head %}
+
+<title>Fruitful Tree Count Management - Home</title>
+{% endblock %} {% block content %}
+
+<!-- Carousel Start -->
+<div class="container-fluid p-0">
+  <div
+    id="header-carousel"
+    class="carousel slide carousel-fade"
+    data-bs-ride="carousel"
+  >
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+          class="w-100"
+          src="{% static 'organic-farm-website-template/img/carousel-1.jpg' %}"
+          alt="Image"
+        />
+        <div
+          class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center"
+        >
+          <div class="text-start p-5" style="max-width: 900px">
+            <h3 class="text-white">Farms Management</h3>
+            <h1 class="display-1 text-white mb-md-4">
+              Farms Management & Tree Detection
+            </h1>
+            <a
+              href="{% url 'farms:farm_view' %}"
+              class="btn btn-primary py-md-3 px-md-5 me-3"
+              >Explore</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img
+          class="w-100"
+          src="{% static 'organic-farm-website-template/img/carousel-2.jpg' %}"
+          alt="Image"
+        />
+        <div
+          class="carousel-caption top-0 bottom-0 start-0 end-0 d-flex flex-column align-items-center justify-content-center"
+        >
+          <div class="text-start p-5" style="max-width: 900px">
+            <h3 class="text-white">Vegetation Analysis</h3>
+            <h1 class="display-1 text-white mb-md-4">
+              Vegetation Analysis Using Landsat Images
+            </h1>
+            <a
+              href="{% url 'changedet:NDVI_view'%}"
+              class="btn btn-primary py-md-3 px-md-5 me-3"
+              >Explore</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#header-carousel"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#header-carousel"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+<!-- Carousel End -->
+
+<!-- Banner Start -->
+<div class="container-fluid banner mb-5">
+  <div class="container">
+    <div class="row gx-0">
+      <div class="col-md-6">
+        <div
+          class="bg-primary bg-vegetable d-flex flex-column justify-content-center p-5"
+          style="height: 300px"
+        >
+          <h3 class="text-white mb-3">Farms Management</h3>
+          <p class="text-white">
+            Fruitful Tree Farms Add, Update, Delete, Search and View statistical
+            information with tree detection feature from google sattelite
+            images.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div
+          class="bg-secondary bg-fruit d-flex flex-column justify-content-center p-5"
+          style="height: 300px"
+        >
+          <h3 class="text-white mb-3">Vegetation Analysis</h3>
+          <p class="text-white">
+            Vegetation Analysis services provide vegetation, burned areas,
+            changes detection using landsat images.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Banner Start -->
+
+<!-- Features Start -->
+<div class="container-fluid bg-primary feature py-5 pb-lg-0 my-5">
+  <div class="container py-5 pb-lg-0">
+    <div class="mx-auto text-center mb-3 pb-2" style="max-width: 500px">
+      <h6 class="text-uppercase text-secondary">
+        General Organization of Remote Sensing
+      </h6>
+      <h1 class="display-5 text-white">GORS</h1>
+    </div>
+    <div class="row g-5">
+      <div class="col-lg-3">
+        <div class="text-white mb-5">
+          <!-- <div
+            class="bg-secondary rounded-pill d-flex align-items-center justify-content-center mb-3"
+            style="width: 60px; height: 60px"
+          >
+            <i class="fa fa-seedling fs-4 text-white"></i>
+          </div> -->
+          <h4 class="text-white" style="text-align: justify; direction: rtl">
+            إدارة وتنفيذ برنامج الفضاء السوري
+          </h4>
+        </div>
+        <div class="text-white">
+          <!-- <div
+            class="bg-secondary rounded-pill d-flex align-items-center justify-content-center mb-3"
+            style="width: 60px; height: 60px"
+          >
+            <i class="fa fa-award fs-4 text-white"></i>
+          </div> -->
+          <h4 class="text-white" style="text-align: justify; direction: rtl">
+            إعداد وتدريب وتأهيل المختصين والكوادر الفنية في مختلف الاختصاصات
+            العلمية والعملية
+          </h4>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="d-block bg-white h-100 text-center p-5 pb-lg-0">
+          <p>
+            وهي هيئة عامة علمية بحثية، ترتبط بـ"وزارة الاتصالات والتقانة"، يوكل
+            إليها أعمال المسح الفضائي والجوي والأرضي الخاص بتقنيات الاستشعار عن
+            بعد وتحليل المعطيات الناتجة عنها بهدف الاستفادة منها في مجالات
+            استكشاف واستثمار الموارد الطبيعية والدراسات المتعلقة بالبيئة في
+            سورية
+            <br />
+          </p>
+          <img
+            src="http://www.gors.sy/wp-content/uploads/2017/05/LogoGorsNew-3.png"
+            alt="gors"
+            style="background-color: #34ad54"
+          />
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="text-white mb-5">
+          <!-- <div
+            class="bg-secondary rounded-pill d-flex align-items-center justify-content-center mb-3"
+            style="width: 60px; height: 60px"
+          >
+            <i class="fa fa-tractor fs-4 text-white"></i>
+          </div> -->
+          <h4 class="text-white" style="text-align: justify; direction: rtl">
+            إقامة المنشآت اللازمة لأعمال الهيئة في مختلف النواحي العلمية
+            والعملية
+          </h4>
+        </div>
+        <div class="text-white">
+          <!-- <div
+            class="bg-secondary rounded-pill d-flex align-items-center justify-content-center mb-3"
+            style="width: 60px; height: 60px"
+          >
+            <i class="fa fa-phone-alt fs-4 text-white"></i>
+          </div> -->
+          <h4 class="text-white" style="text-align: justify; direction: rtl">
+            إجراء الدراسات والبحوث والتجارب العلمية الخاصة بعلوم الفضاء
+            والاستشعار عن بعد
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Features Start -->
+
+<!-- Testimonial Start -->
+<div class="container-fluid bg-testimonial py-5 my-5">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="owl-carousel testimonial-carousel p-5">
+          <div class="testimonial-item text-center text-white">
+            <img
+              class="img-fluid mx-auto p-2 border border-5 border-secondary rounded-circle mb-4"
+              src="{% static 'organic-farm-website-template/img/testimonial-2.jpg' %}"
+              alt=""
+            />
+            <p class="fs-5">
+              Dolores sed duo clita justo dolor et stet lorem kasd dolore lorem
+              ipsum. At lorem lorem magna ut et, nonumy labore diam erat. Erat
+              dolor rebum sit ipsum.
+            </p>
+            <hr class="mx-auto w-25" />
+            <h4 class="text-white mb-0">Client Name</h4>
+          </div>
+          <div class="testimonial-item text-center text-white">
+            <img
+              class="img-fluid mx-auto p-2 border border-5 border-secondary rounded-circle mb-4"
+              src="{% static 'organic-farm-website-template/img/testimonial-2.jpg' %}"
+              alt=""
+            />
+            <p class="fs-5">
+              Dolores sed duo clita justo dolor et stet lorem kasd dolore lorem
+              ipsum. At lorem lorem magna ut et, nonumy labore diam erat. Erat
+              dolor rebum sit ipsum.
+            </p>
+            <hr class="mx-auto w-25" />
+            <h4 class="text-white mb-0">Client Name</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Testimonial End -->
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "vsintellicode.features.python.deepLearning": "enabled",
+    "debug.javascript.autoAttachFilter": "disabled",
+    "javascript.format.enable": true
+  },
+  "launch": {
+    "configurations": [
+      {
+        "type": "msedge",
+        "name": "http://127.0.0.1:8000/farms/",
+        "request": "launch",
+        "url": "http://127.0.0.1:8000/farms/"
+      }
+    ]
+  }
+}

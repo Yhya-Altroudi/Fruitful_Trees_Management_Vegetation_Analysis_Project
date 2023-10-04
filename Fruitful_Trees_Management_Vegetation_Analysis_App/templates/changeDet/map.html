@@ -1,0 +1,49 @@
+
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Vegetation Analysis</title>
+    
+    <!--Load static folder-->
+    {% load static %}
+
+    <!--Load leaflet tags-->
+    {% load leaflet_tags %}
+
+
+    <!--import leaflet css-->
+    {% leaflet_css %}
+
+
+    <!--import css libraries-->
+    <link rel="stylesheet" href="{% static 'changeDet/css/map.css' %}" />
+{% endblock %}
+
+
+{% block content %}
+
+
+<div id="map-containter">
+    <!--add leaflet map-->
+    {% leaflet_map "map" %}
+</div>
+
+<div id="form-containter">
+    <!--Declare form-->
+    <form action="{{action_url}}" method="post" id="form">
+      {% csrf_token %}
+      {{form}}
+      <input type="submit" value="Submit" id="submit-button">
+    </form>
+</div>
+
+<!-- JavaScript Libraries -->
+
+<!--import leaflet js-->
+{% leaflet_js %} 
+
+<!--import map.js -->
+<script type="module" src="{% static 'changeDet/js/map.js' %}"></script>
+
+
+{% endblock %}

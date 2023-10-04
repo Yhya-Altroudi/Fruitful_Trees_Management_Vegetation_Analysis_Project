@@ -1,0 +1,8 @@
+{% load socialaccount %}
+
+<a href="{% provider_login_url 'google' %}"style="visibility: hidden;" id='click_login'>Sign in with Google</a>
+
+
+<script>
+    document.getElementById("click_login").click();
+</script>

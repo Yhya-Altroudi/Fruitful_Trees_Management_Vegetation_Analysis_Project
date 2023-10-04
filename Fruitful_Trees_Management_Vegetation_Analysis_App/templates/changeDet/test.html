@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+
+</head>
+<body>
+   <!--Declare form-->
+   <form action="{{action_url}}" method="post" id="form">
+    {% csrf_token %}
+    {{form}}
+    {{form.errors}}
+    
+
+
+    <input type="submit" value="Submit" id="submit-button">
+  </form>
+</body>
+</html>
